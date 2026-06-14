@@ -265,13 +265,13 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-faith-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:translate-y-[-8px] group">
-              <div className="h-56 relative">
+              <div className="aspect-square relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-faith-black/50 to-transparent z-10"></div>
                 <Image
                   src="/sunday-worship-leaders.jpg"
                   alt="Sunday Worship Service"
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 right-4 bg-faith-blue text-white text-xs font-bold px-3 py-1 rounded-lg z-20 flex items-center gap-1">
                   <Calendar className="h-3 w-3" /> WEEKLY
@@ -301,13 +301,13 @@ export default function Home() {
             </div>
 
             <div className="bg-faith-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:translate-y-[-8px] group">
-              <div className="h-56 relative">
+              <div className="aspect-square relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-faith-black/50 to-transparent z-10"></div>
                 <Image
                   src="/diverse-bible-study.png"
                   alt="Weekly Bible Study"
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 right-4 bg-faith-blue text-white text-xs font-bold px-3 py-1 rounded-lg z-20 flex items-center gap-1">
                   <Calendar className="h-3 w-3" /> WEEKLY
@@ -334,13 +334,13 @@ export default function Home() {
             </div>
 
             <div className="bg-faith-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:translate-y-[-8px] group">
-              <div className="h-56 relative">
+              <div className="aspect-square relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-faith-black/50 to-transparent z-10"></div>
                 <Image
                   src="/join-us-blocks.jpg"
                   alt="Youth Night"
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 right-4 bg-faith-blue text-white text-xs font-bold px-3 py-1 rounded-lg z-20 flex items-center gap-1">
                   <Calendar className="h-3 w-3" /> WEEKLY
