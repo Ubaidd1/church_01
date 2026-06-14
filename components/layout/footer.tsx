@@ -47,7 +47,7 @@ export default function Footer() {
               With a foundation built on faith, The House Of Overflow is devoted to helping individuals find hope and
               clarity, no matter where they are in life.
             </p>
-            <div className="flex gap-4">
+            <div className="flex items-center gap-4">
               <Link
                 href="https://www.instagram.com/reel/DIfq_7pOSKi/?igsh=bDk1eTdkNDhjMnUw"
                 target="_blank"
@@ -64,6 +64,13 @@ export default function Footer() {
                 <Youtube className="h-5 w-5" />
                 <span className="sr-only">YouTube</span>
               </Link>
+              <Image
+                src="/church_bottom.png"
+                alt="The Seal of the Apostle Neil C. Pereira"
+                width={92}
+                height={200}
+                className="h-11 w-auto object-contain"
+              />
             </div>
           </div>
 
