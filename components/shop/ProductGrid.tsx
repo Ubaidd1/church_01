@@ -14,14 +14,18 @@ export default function ProductGrid({ products }: ProductGridProps) {
     )
   }
 
+  const [featuredProduct] = products
+
+  if (products.length === 1 && featuredProduct) {
+    return (
+      <div className="mx-auto max-w-5xl">
+        <ProductCard product={featuredProduct} featured />
+      </div>
+    )
+  }
+
   return (
-    <div
-      className={
-        products.length === 1
-          ? "mx-auto grid max-w-md grid-cols-1 gap-6"
-          : "grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-3"
-      }
-    >
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

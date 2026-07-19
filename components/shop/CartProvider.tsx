@@ -19,6 +19,7 @@ type CartContextValue = {
   items: CartItem[]
   itemCount: number
   addItem: (productId: string, quantity?: number) => void
+  updateQuantity: (productId: string, quantity: number) => void
   removeItem: (productId: string) => void
   clearCart: () => void
   isHydrated: boolean
@@ -66,6 +67,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
+    setItems((current) => {
+      if (quantity <= 0) {
+        return current.filter((item) => item.productId !== productId)
+      }
+      return current.map((item) =>
+        item.productId === productId ? { ...item, quantity } : item
+      )
+    })
+  }, [])
+
   const removeItem = useCallback((productId: string) => {
     setItems((current) => current.filter((item) => item.productId !== productId))
   }, [])
@@ -84,11 +96,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       items,
       itemCount,
       addItem,
+      updateQuantity,
       removeItem,
       clearCart,
       isHydrated,
     }),
-    [items, itemCount, addItem, removeItem, clearCart, isHydrated]
+    [items, itemCount, addItem, updateQuantity, removeItem, clearCart, isHydrated]
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
