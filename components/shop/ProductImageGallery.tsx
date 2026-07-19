@@ -17,14 +17,14 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/10 bg-[#5B6778] shadow-[0_24px_50px_-20px_rgba(15,23,42,0.55)]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-faith-gray shadow-xl">
         <Image
           src={activeImage}
           alt={`${title} — image ${activeIndex + 1}`}
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover object-center transition-opacity duration-300"
+          className="object-cover object-center"
         />
       </div>
 
@@ -37,10 +37,10 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
               onClick={() => setActiveIndex(index)}
               aria-label={`View image ${index + 1}`}
               className={cn(
-                "relative aspect-square overflow-hidden rounded-2xl border transition-all duration-300",
+                "relative aspect-square overflow-hidden rounded-xl border-2 transition-all duration-300",
                 index === activeIndex
-                  ? "border-white/50 ring-2 ring-white/30"
-                  : "border-white/10 opacity-70 hover:opacity-100"
+                  ? "border-faith-gold ring-2 ring-faith-gold/30"
+                  : "border-transparent opacity-80 hover:opacity-100"
               )}
             >
               <Image

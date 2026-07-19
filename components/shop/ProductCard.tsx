@@ -14,61 +14,56 @@ export default function ProductCard({ product }: ProductCardProps) {
   const primaryImage = product.images[0]
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#5B6778] shadow-[0_18px_40px_-18px_rgba(15,23,42,0.5)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_26px_50px_-16px_rgba(15,23,42,0.6)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-faith-white shadow-lg transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl">
       <Link
         href={`/shop/${product.slug}`}
-        className="relative block aspect-square overflow-hidden bg-[#6A7688]"
+        className="relative block aspect-square overflow-hidden bg-faith-gray"
       >
-        <div className="absolute inset-6 rounded-[2rem] bg-[#7A8799]/35" />
         {primaryImage && (
           <Image
             src={primaryImage}
             alt={product.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover object-center p-3 transition-transform duration-700 group-hover:scale-105"
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
           />
         )}
-        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-[#3F4A5A]/75 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-100 backdrop-blur-md">
+        <div className="absolute left-4 top-4 rounded-lg bg-faith-blue px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-md">
           {outOfStock ? "Sold Out" : `${product.quantity} in stock`}
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
-        <h3 className="mb-1 text-base font-bold uppercase tracking-wide text-white md:text-lg">
-          <Link href={`/shop/${product.slug}`} className="transition-colors hover:text-slate-200">
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="mb-2 font-serif text-xl font-bold text-faith-black">
+          <Link href={`/shop/${product.slug}`} className="transition-colors hover:text-faith-blue">
             {product.title}
           </Link>
         </h3>
 
         {product.shortDescription && (
-          <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-slate-300">
+          <p className="mb-4 line-clamp-2 flex-1 text-sm leading-relaxed text-faith-slate">
             {product.shortDescription}
           </p>
         )}
 
-        <div className="mb-4 flex items-center gap-2 text-xs text-slate-300">
-          <Package className="h-3.5 w-3.5 text-slate-200" />
+        <div className="mb-4 flex items-center gap-2 text-sm text-faith-slate">
+          <Package className="h-4 w-4 text-faith-gold" />
           <span>
             Qty available:{" "}
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-faith-black">
               {product.quantity} {product.quantity === 1 ? "unit" : "units"}
             </span>
           </span>
         </div>
 
-        <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-4">
-          <div className="min-w-0">
-            <p className="text-xl font-bold tracking-tight text-white md:text-2xl">
-              {formatPrice(product.price)}
-            </p>
-          </div>
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-faith-gray pt-4">
+          <p className="text-2xl font-bold tracking-tight text-faith-black">{formatPrice(product.price)}</p>
 
           <div className="flex shrink-0 items-center gap-2">
             <Button
               variant="outline"
               size="icon"
-              className="h-11 w-11 rounded-xl border-white/20 bg-transparent text-slate-100 hover:bg-white/10 hover:text-white"
+              className="h-11 w-11 rounded-xl border-faith-slate/30 text-faith-slate hover:border-faith-blue hover:bg-faith-blue/5 hover:text-faith-blue"
               asChild
             >
               <Link href={`/shop/${product.slug}`} aria-label="View details" title="View details">

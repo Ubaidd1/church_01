@@ -41,10 +41,10 @@ export default function AddToCartButton({
         aria-label={added ? "Added to cart" : "Add to cart"}
         title={added ? "Added to cart" : "Add to cart"}
         className={cn(
-          "h-11 w-11 rounded-xl shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-all duration-300",
+          "h-11 w-11 rounded-xl shadow-md transition-all duration-300",
           added
             ? "bg-emerald-500 hover:bg-emerald-500 text-white"
-            : "bg-[#7B96F5] hover:bg-[#8BA4F7] text-white",
+            : "bg-faith-blue hover:bg-faith-blue/90 text-white shadow-faith-blue/30",
           className
         )}
       >
@@ -60,10 +60,10 @@ export default function AddToCartButton({
       disabled={disabled}
       onClick={handleAdd}
       className={cn(
-        "rounded-xl font-semibold tracking-wide shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-all duration-300",
+        "rounded-xl font-medium shadow-md transition-all duration-300",
         added
           ? "bg-emerald-500 hover:bg-emerald-500 text-white"
-          : "bg-slate-200 hover:bg-white text-slate-800",
+          : "bg-faith-blue hover:bg-faith-blue/90 text-white shadow-faith-blue/30",
         className
       )}
     >

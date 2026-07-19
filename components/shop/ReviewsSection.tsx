@@ -22,7 +22,7 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           key={index}
           className={`h-4 w-4 ${
-            index < rating ? "fill-amber-300 text-amber-300" : "fill-transparent text-slate-500"
+            index < rating ? "fill-faith-gold text-faith-gold" : "fill-transparent text-faith-slate/40"
           }`}
         />
       ))}
@@ -52,7 +52,7 @@ function RatingPicker({
           >
             <Star
               className={`h-6 w-6 ${
-                active ? "fill-amber-300 text-amber-300" : "fill-transparent text-slate-400"
+                active ? "fill-faith-gold text-faith-gold" : "fill-transparent text-faith-slate/40"
               }`}
             />
           </button>
@@ -139,30 +139,28 @@ export default function ReviewsSection({ productId, initialReviews }: ReviewsSec
   }
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-[#5B6778]/70 p-6 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.45)] md:p-8">
+    <section className="rounded-2xl bg-faith-white p-6 shadow-lg md:p-8">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-white">Reviews</h2>
-          <p className="mt-1 text-sm text-slate-300">
+          <h2 className="font-serif text-2xl font-bold text-faith-black">Reviews</h2>
+          <div className="mt-2 h-1.5 w-20 rounded-full bg-faith-gold" />
+          <p className="mt-3 text-sm text-faith-slate">
             {reviews.length} customer {reviews.length === 1 ? "review" : "reviews"}
           </p>
         </div>
         {reviews.length > 0 && (
           <div className="flex items-center gap-2">
             <StarRating rating={Math.round(averageRating)} />
-            <span className="text-sm font-medium text-white">{averageRating.toFixed(1)}</span>
+            <span className="text-sm font-medium text-faith-black">{averageRating.toFixed(1)}</span>
           </div>
         )}
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="mb-8 rounded-2xl border border-white/10 bg-[#465263]/45 p-5 md:p-6"
-      >
-        <h3 className="mb-4 text-lg font-semibold text-white">Write a Review</h3>
+      <form onSubmit={handleSubmit} className="mb-8 rounded-xl border border-faith-slate/15 bg-faith-gray/40 p-5 md:p-6">
+        <h3 className="mb-4 font-serif text-lg font-bold text-faith-black">Write a Review</h3>
 
         <div className="mb-4 space-y-2">
-          <Label htmlFor="review-name" className="text-slate-200">
+          <Label htmlFor="review-name" className="text-faith-black">
             Your Name
           </Label>
           <Input
@@ -170,17 +168,17 @@ export default function ReviewsSection({ productId, initialReviews }: ReviewsSec
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder="Enter your name"
-            className="rounded-xl border-white/15 bg-[#3F4A5A]/80 text-white placeholder:text-slate-400 focus-visible:ring-slate-300"
+            className="rounded-xl border-faith-slate/20 bg-faith-white focus-visible:ring-faith-blue"
           />
         </div>
 
         <div className="mb-4 space-y-2">
-          <Label className="text-slate-200">Rating</Label>
+          <Label className="text-faith-black">Rating</Label>
           <RatingPicker value={rating} onChange={setRating} />
         </div>
 
         <div className="mb-5 space-y-2">
-          <Label htmlFor="review-comment" className="text-slate-200">
+          <Label htmlFor="review-comment" className="text-faith-black">
             Your Review
           </Label>
           <Textarea
@@ -189,15 +187,15 @@ export default function ReviewsSection({ productId, initialReviews }: ReviewsSec
             onChange={(event) => setComment(event.target.value)}
             placeholder="Share your experience with this product..."
             rows={4}
-            className="min-h-[120px] rounded-xl border-white/15 bg-[#3F4A5A]/80 text-white placeholder:text-slate-400 focus-visible:ring-slate-300"
+            className="min-h-[120px] rounded-xl border-faith-slate/20 bg-faith-white focus-visible:ring-faith-blue"
           />
         </div>
 
-        {error && <p className="mb-3 text-sm text-red-300">{error}</p>}
+        {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
         <Button
           type="submit"
-          className="w-full rounded-xl bg-slate-200 text-slate-800 hover:bg-white sm:w-auto"
+          className="w-full rounded-xl bg-faith-blue text-white hover:bg-faith-blue/90 sm:w-auto"
         >
           {submitted ? (
             <>
@@ -214,16 +212,16 @@ export default function ReviewsSection({ productId, initialReviews }: ReviewsSec
         {reviews.map((review) => (
           <article
             key={review.id}
-            className="rounded-2xl border border-white/10 bg-[#465263]/45 p-5"
+            className="rounded-xl border border-faith-slate/15 bg-faith-gray/30 p-5"
           >
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="font-semibold text-white">{review.name}</p>
-                <p className="text-xs text-slate-400">{review.date}</p>
+                <p className="font-semibold text-faith-black">{review.name}</p>
+                <p className="text-xs text-faith-slate">{review.date}</p>
               </div>
               <StarRating rating={review.rating} />
             </div>
-            <p className="leading-relaxed text-slate-300">{review.comment}</p>
+            <p className="leading-relaxed text-faith-slate">{review.comment}</p>
           </article>
         ))}
       </div>

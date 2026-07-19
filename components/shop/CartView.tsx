@@ -12,7 +12,7 @@ export default function CartView() {
 
   if (!isHydrated) {
     return (
-      <div className="rounded-3xl border border-white/10 bg-[#5B6778]/70 p-10 text-center text-slate-300">
+      <div className="rounded-2xl bg-faith-white p-10 text-center text-faith-slate shadow-lg">
         Loading cart...
       </div>
     )
@@ -33,18 +33,15 @@ export default function CartView() {
 
   if (lines.length === 0) {
     return (
-      <div className="rounded-3xl border border-white/10 bg-[#5B6778]/70 px-6 py-16 text-center shadow-[0_18px_40px_-18px_rgba(15,23,42,0.45)]">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#465263]/80">
-          <ShoppingBag className="h-7 w-7 text-slate-200" />
+      <div className="rounded-2xl bg-faith-white px-6 py-16 text-center shadow-lg">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-faith-blue/10">
+          <ShoppingBag className="h-7 w-7 text-faith-blue" />
         </div>
-        <h2 className="mb-2 text-2xl font-semibold text-white">Your cart is empty</h2>
-        <p className="mx-auto mb-8 max-w-md text-slate-300">
+        <h2 className="mb-2 font-serif text-2xl font-bold text-faith-black">Your cart is empty</h2>
+        <p className="mx-auto mb-8 max-w-md text-faith-slate">
           Browse the shop and add the Overflow crewneck when you are ready.
         </p>
-        <Button
-          className="rounded-xl bg-slate-200 text-slate-800 hover:bg-white"
-          asChild
-        >
+        <Button className="rounded-xl bg-faith-blue text-white hover:bg-faith-blue/90" asChild>
           <Link href="/shop">Continue Shopping</Link>
         </Button>
       </div>
@@ -61,11 +58,11 @@ export default function CartView() {
           return (
             <div
               key={product.id}
-              className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-[#5B6778]/80 p-4 shadow-[0_14px_32px_-18px_rgba(15,23,42,0.45)] sm:flex-row sm:items-center"
+              className="flex flex-col gap-4 rounded-2xl bg-faith-white p-4 shadow-lg sm:flex-row sm:items-center"
             >
               <Link
                 href={`/shop/${product.slug}`}
-                className="relative h-28 w-full shrink-0 overflow-hidden rounded-2xl bg-[#465263] sm:h-28 sm:w-28"
+                className="relative h-28 w-full shrink-0 overflow-hidden rounded-xl bg-faith-gray sm:h-28 sm:w-28"
               >
                 {image && (
                   <Image
@@ -81,29 +78,29 @@ export default function CartView() {
               <div className="min-w-0 flex-1">
                 <Link
                   href={`/shop/${product.slug}`}
-                  className="text-lg font-semibold text-white transition-colors hover:text-slate-200"
+                  className="font-serif text-lg font-bold text-faith-black transition-colors hover:text-faith-blue"
                 >
                   {product.title}
                 </Link>
-                <p className="mt-1 text-sm text-slate-300">{formatPrice(product.price)} each</p>
+                <p className="mt-1 text-sm text-faith-slate">{formatPrice(product.price)} each</p>
 
                 <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <div className="inline-flex items-center rounded-full border border-white/15 bg-[#465263]/70">
+                  <div className="inline-flex items-center rounded-xl border border-faith-slate/20 bg-faith-gray/50">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
-                      className="flex h-9 w-9 items-center justify-center text-slate-200 transition-colors hover:text-white"
+                      className="flex h-9 w-9 items-center justify-center text-faith-slate transition-colors hover:text-faith-blue"
                       onClick={() => updateQuantity(product.id, item.quantity - 1)}
                     >
                       <Minus className="h-4 w-4" />
                     </button>
-                    <span className="min-w-8 text-center text-sm font-semibold text-white">
+                    <span className="min-w-8 text-center text-sm font-semibold text-faith-black">
                       {item.quantity}
                     </span>
                     <button
                       type="button"
                       aria-label="Increase quantity"
-                      className="flex h-9 w-9 items-center justify-center text-slate-200 transition-colors hover:text-white"
+                      className="flex h-9 w-9 items-center justify-center text-faith-slate transition-colors hover:text-faith-blue"
                       onClick={() =>
                         updateQuantity(
                           product.id,
@@ -118,7 +115,7 @@ export default function CartView() {
                   <button
                     type="button"
                     onClick={() => removeItem(product.id)}
-                    className="inline-flex items-center gap-1.5 text-sm text-slate-300 transition-colors hover:text-red-300"
+                    className="inline-flex items-center gap-1.5 text-sm text-faith-slate transition-colors hover:text-red-600"
                   >
                     <Trash2 className="h-4 w-4" />
                     Remove
@@ -127,7 +124,7 @@ export default function CartView() {
               </div>
 
               <div className="text-left sm:text-right">
-                <p className="text-lg font-semibold text-white">{formatPrice(lineTotal)}</p>
+                <p className="text-lg font-bold text-faith-black">{formatPrice(lineTotal)}</p>
               </div>
             </div>
           )
@@ -136,29 +133,29 @@ export default function CartView() {
         <button
           type="button"
           onClick={clearCart}
-          className="text-sm text-slate-300 transition-colors hover:text-white"
+          className="text-sm text-faith-slate transition-colors hover:text-faith-blue"
         >
           Clear cart
         </button>
       </div>
 
-      <aside className="h-fit rounded-3xl border border-white/10 bg-[#5B6778]/80 p-6 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.45)] lg:sticky lg:top-28">
-        <h2 className="mb-5 text-xl font-semibold text-white">Order Summary</h2>
-        <div className="mb-2 flex items-center justify-between text-slate-300">
+      <aside className="h-fit rounded-2xl bg-faith-white p-6 shadow-lg lg:sticky lg:top-28">
+        <h2 className="mb-5 font-serif text-xl font-bold text-faith-black">Order Summary</h2>
+        <div className="mb-2 flex items-center justify-between text-faith-slate">
           <span>Subtotal</span>
-          <span className="font-medium text-white">{formatPrice(subtotal)}</span>
+          <span className="font-medium text-faith-black">{formatPrice(subtotal)}</span>
         </div>
-        <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-5 text-slate-300">
+        <div className="mb-6 flex items-center justify-between border-b border-faith-gray pb-5 text-faith-slate">
           <span>Shipping</span>
           <span className="text-sm">Calculated at checkout</span>
         </div>
         <div className="mb-6 flex items-center justify-between text-lg">
-          <span className="font-semibold text-white">Total</span>
-          <span className="font-semibold text-white">{formatPrice(subtotal)}</span>
+          <span className="font-semibold text-faith-black">Total</span>
+          <span className="font-bold text-faith-black">{formatPrice(subtotal)}</span>
         </div>
         <Button
           size="lg"
-          className="mb-3 w-full rounded-xl bg-slate-200 text-slate-800 hover:bg-white"
+          className="mb-3 w-full rounded-xl bg-faith-gold text-faith-black hover:bg-faith-gold/90"
           disabled
         >
           Checkout Coming Soon
@@ -166,7 +163,7 @@ export default function CartView() {
         <Button
           variant="outline"
           size="lg"
-          className="w-full rounded-xl border-white/20 bg-transparent text-slate-100 hover:bg-white/10 hover:text-white"
+          className="w-full rounded-xl border-faith-blue text-faith-blue hover:bg-faith-blue hover:text-white"
           asChild
         >
           <Link href="/shop">Continue Shopping</Link>
