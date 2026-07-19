@@ -46,6 +46,12 @@ export default function Header() {
                 Events
               </Link>
               <Link
+                href="/shop"
+                className="text-white font-medium px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
+              >
+                Shop
+              </Link>
+              <Link
                 href="#contact"
                 className="text-white font-medium px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
               >
@@ -99,6 +105,12 @@ export default function Header() {
                   className="text-lg font-medium py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
                 >
                   Contact
+                </Link>
+                <Link
+                  href="/shop"
+                  className="text-lg font-medium py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  Shop
                 </Link>
               </nav>
 

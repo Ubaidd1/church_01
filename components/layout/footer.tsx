@@ -122,6 +122,15 @@ export default function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/shop"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors group"
+                >
+                  <ChevronRight className="h-4 w-4 mr-2 text-faith-gold group-hover:translate-x-1 transition-transform" />
+                  Shop
+                </Link>
+              </li>
             </ul>
           </div>
 
