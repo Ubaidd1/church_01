@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import AddToCartButton from "@/components/shop/AddToCartButton"
 import ProductImageGallery from "@/components/shop/ProductImageGallery"
+import ReviewsSection from "@/components/shop/ReviewsSection"
 import { formatPrice, type Product } from "@/data/products"
 
 type ProductDetailsProps = {
@@ -151,7 +152,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             productId={product.id}
             disabled={outOfStock}
             size="lg"
-            className="w-full sm:w-auto sm:min-w-[220px]"
+            className="w-full"
           />
         </div>
       </div>
@@ -186,41 +187,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           </Accordion>
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-[#5B6778]/70 p-6 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.45)] md:p-8">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-white">Reviews</h2>
-              <p className="mt-1 text-sm text-slate-300">
-                {product.reviews.length} customer{" "}
-                {product.reviews.length === 1 ? "review" : "reviews"}
-              </p>
-            </div>
-            {product.reviews.length > 0 && (
-              <div className="flex items-center gap-2">
-                <StarRating rating={Math.round(averageRating)} />
-                <span className="text-sm font-medium text-white">{averageRating.toFixed(1)}</span>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            {product.reviews.map((review) => (
-              <article
-                key={review.id}
-                className="rounded-2xl border border-white/10 bg-[#465263]/45 p-5"
-              >
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <p className="font-semibold text-white">{review.name}</p>
-                    <p className="text-xs text-slate-400">{review.date}</p>
-                  </div>
-                  <StarRating rating={review.rating} />
-                </div>
-                <p className="leading-relaxed text-slate-300">{review.comment}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <ReviewsSection productId={product.id} initialReviews={product.reviews} />
       </div>
     </div>
   )
