@@ -11,21 +11,29 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const outOfStock = product.quantity <= 0
+  const primaryImage = product.images[0]
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#5B6778] shadow-[0_18px_40px_-18px_rgba(15,23,42,0.55)] transition-all duration-500 hover:-translate-y-1.5 hover:bg-[#627084] hover:shadow-[0_24px_48px_-16px_rgba(15,23,42,0.6)]">
       <Link href={`/shop/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-[#465263]">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-        />
+        {primaryImage && (
+          <Image
+            src={primaryImage}
+            alt={product.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#465263]/90 via-[#465263]/20 to-transparent" />
         <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-[#3F4A5A]/70 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-100 backdrop-blur-md">
           {outOfStock ? "Sold Out" : `${product.quantity} in stock`}
         </div>
+        {product.images.length > 1 && (
+          <div className="absolute right-4 top-4 rounded-full border border-white/15 bg-[#3F4A5A]/70 px-3 py-1 text-xs font-medium text-slate-100 backdrop-blur-md">
+            {product.images.length} photos
+          </div>
+        )}
         <div className="absolute bottom-4 left-4 right-4">
           <span className="text-2xl font-semibold tracking-tight text-white">{formatPrice(product.price)}</span>
         </div>

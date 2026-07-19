@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import AddToCartButton from "@/components/shop/AddToCartButton"
+import ProductImageGallery from "@/components/shop/ProductImageGallery"
 import { formatPrice, type Product } from "@/data/products"
 
 type ProductDetailsProps = {
@@ -47,16 +47,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       </Breadcrumb>
 
       <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/10 bg-[#5B6778] shadow-[0_24px_50px_-20px_rgba(15,23,42,0.55)]">
-          <Image
-            src={product.image}
-            alt={product.title}
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-center"
-          />
-        </div>
+        <ProductImageGallery images={product.images} title={product.title} />
 
         <div className="rounded-3xl border border-white/10 bg-[#5B6778]/70 p-6 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.45)] backdrop-blur-sm md:p-8 lg:pt-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
