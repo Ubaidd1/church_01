@@ -1,14 +1,30 @@
 "use client"
 
+import { useMemo, useState, type FormEvent } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
+import { Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useCart } from "@/components/shop/CartProvider"
 import { formatPrice, getProductById } from "@/data/products"
+import { createCheckoutSession } from "@/lib/checkout"
+
+function getShippingFee(): number {
+  const raw = process.env.NEXT_PUBLIC_SHIPPING_FEE
+  const parsed = raw ? Number(raw) : 5.99
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 5.99
+}
 
 export default function CartView() {
   const { items, updateQuantity, removeItem, clearCart, isHydrated } = useCart()
+  const [customerName, setCustomerName] = useState("")
+  const [customerEmail, setCustomerEmail] = useState("")
+  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+
+  const shippingFee = useMemo(() => getShippingFee(), [])
 
   if (!isHydrated) {
     return (
@@ -30,6 +46,7 @@ export default function CartView() {
     (total, { item, product }) => total + product.price * item.quantity,
     0
   )
+  const displayTotal = subtotal + shippingFee
 
   if (lines.length === 0) {
     return (
@@ -46,6 +63,51 @@ export default function CartView() {
         </Button>
       </div>
     )
+  }
+
+  async function handleCheckout(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setCheckoutError(null)
+
+    const name = customerName.trim()
+    const email = customerEmail.trim()
+
+    if (name.length < 2) {
+      setCheckoutError("Please enter your full name.")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setCheckoutError("Please enter a valid email address.")
+      return
+    }
+
+    setIsCheckingOut(true)
+
+    try {
+      const { checkoutUrl } = await createCheckoutSession({
+        customerName: name,
+        customerEmail: email,
+        cartItems: lines.map(({ item }) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+        shippingFee,
+      })
+
+      try {
+        sessionStorage.setItem("hoo-checkout-email", email)
+      } catch {
+        // Ignore storage errors before redirect
+      }
+
+      window.location.href = checkoutUrl
+    } catch (error) {
+      setCheckoutError(
+        error instanceof Error ? error.message : "Checkout failed. Please try again."
+      )
+      setIsCheckingOut(false)
+    }
   }
 
   return (
@@ -147,23 +209,75 @@ export default function CartView() {
         </div>
         <div className="mb-6 flex items-center justify-between border-b border-faith-gray pb-5 text-faith-slate">
           <span>Shipping</span>
-          <span className="text-sm">Calculated at checkout</span>
+          <span className="font-medium text-faith-black">{formatPrice(shippingFee)}</span>
         </div>
         <div className="mb-6 flex items-center justify-between text-lg">
           <span className="font-semibold text-faith-black">Total</span>
-          <span className="font-bold text-faith-black">{formatPrice(subtotal)}</span>
+          <span className="font-bold text-faith-black">{formatPrice(displayTotal)}</span>
         </div>
-        <Button
-          size="lg"
-          className="mb-3 w-full rounded-xl bg-faith-gold text-faith-black hover:bg-faith-gold/90"
-          disabled
-        >
-          Checkout Coming Soon
-        </Button>
+
+        <form onSubmit={handleCheckout} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="customerName" className="text-faith-black">
+              Full name
+            </Label>
+            <Input
+              id="customerName"
+              name="customerName"
+              autoComplete="name"
+              value={customerName}
+              onChange={(event) => setCustomerName(event.target.value)}
+              placeholder="Jane Doe"
+              required
+              disabled={isCheckingOut}
+              className="rounded-xl border-faith-slate/20"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="customerEmail" className="text-faith-black">
+              Email
+            </Label>
+            <Input
+              id="customerEmail"
+              name="customerEmail"
+              type="email"
+              autoComplete="email"
+              value={customerEmail}
+              onChange={(event) => setCustomerEmail(event.target.value)}
+              placeholder="jane@example.com"
+              required
+              disabled={isCheckingOut}
+              className="rounded-xl border-faith-slate/20"
+            />
+          </div>
+
+          {checkoutError && (
+            <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+              {checkoutError}
+            </p>
+          )}
+
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full rounded-xl bg-faith-gold text-faith-black hover:bg-faith-gold/90"
+            disabled={isCheckingOut}
+          >
+            {isCheckingOut ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Redirecting to Stripe...
+              </>
+            ) : (
+              "Checkout"
+            )}
+          </Button>
+        </form>
+
         <Button
           variant="outline"
           size="lg"
-          className="w-full rounded-xl border-faith-blue text-faith-blue hover:bg-faith-blue hover:text-white"
+          className="mt-3 w-full rounded-xl border-faith-blue text-faith-blue hover:bg-faith-blue hover:text-white"
           asChild
         >
           <Link href="/shop">Continue Shopping</Link>
