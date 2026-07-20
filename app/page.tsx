@@ -377,6 +377,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Featured Video Section */}
+      <section id="watch" className="py-24 bg-faith-gray relative overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-faith-gold/5 rounded-full -translate-y-1/2 blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-faith-slate/5 rounded-full translate-y-1/2 blur-3xl"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col items-center mb-12">
+            <span className="text-faith-blue font-medium mb-2">WATCH &amp; WORSHIP</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-faith-black mb-4 text-center font-serif">
+              Featured Message
+            </h2>
+            <div className="h-1.5 w-32 bg-faith-gold mb-6 rounded-full"></div>
+            <p className="text-center text-faith-slate max-w-3xl mx-auto text-lg">
+              Join us online and experience this message from The House Of Overflow.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-xl bg-faith-black">
+              <iframe
+                src="https://www.youtube.com/embed/6KCZNpABxVI"
+                title="The House Of Overflow — Featured Message"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 h-full w-full border-0"
+              />
+            </div>
+
+            <div className="mt-10 text-center">
+              <Button
+                asChild
+                className="bg-faith-blue hover:bg-faith-blue/90 text-white rounded-xl px-8 py-6 text-base font-medium shadow-lg hover:shadow-faith-blue/30 transition-all"
+              >
+                <Link href="https://www.youtube.com/@TheHouseOfOverflow" target="_blank" rel="noopener noreferrer">
+                  More Sermons on YouTube
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="py-24 bg-faith-white relative overflow-hidden">
         {/* Decorative elements */}
