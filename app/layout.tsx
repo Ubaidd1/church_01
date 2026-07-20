@@ -24,7 +24,12 @@ export const metadata = {
   title: "Welcome to The House Of Overflow",
   description:
     "The House Of Overflow embodies dedication and service in all aspects of its mission. Much like a cornerstone within its community, The House Of Overflow is committed to nurturing lives and creating a meaningful impact.",
-    generator: 'v0.dev'
+  generator: "v0.dev",
+  icons: {
+    icon: [{ url: "/images/logo.png", type: "image/png" }],
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 }
 
 export default function RootLayout({
