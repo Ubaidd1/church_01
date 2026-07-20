@@ -228,12 +228,12 @@ export default function CheckoutSuccessContent() {
             </div>
           </div>
 
-          <div className="space-y-1 text-xs text-faith-slate/80">
+          {/* <div className="space-y-1 text-xs text-faith-slate/80">
             <p className="break-all">Stripe session: {order.stripeSessionId}</p>
             {order.stripePaymentIntentId && (
               <p className="break-all">Payment intent: {order.stripePaymentIntentId}</p>
             )}
-          </div>
+          </div> */}
         </div>
       )}
 
