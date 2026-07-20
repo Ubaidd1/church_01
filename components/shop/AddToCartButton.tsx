@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Check, ShoppingCart } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/components/shop/CartProvider"
 import { cn } from "@/lib/utils"
@@ -25,9 +26,14 @@ export default function AddToCartButton({
   const [added, setAdded] = useState(false)
 
   const handleAdd = () => {
-    if (disabled || added) return
+    if (disabled) {
+      toast.error("This item is out of stock")
+      return
+    }
+    if (added) return
     addItem(productId)
     setAdded(true)
+    toast.success("Added to cart")
     window.setTimeout(() => setAdded(false), 1800)
   }
 

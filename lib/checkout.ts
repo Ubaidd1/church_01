@@ -1,3 +1,6 @@
+import axios from "axios"
+import { api, getApiErrorMessage } from "@/lib/api"
+
 export type CheckoutCartItem = {
   productId: string
   quantity: number
@@ -39,73 +42,47 @@ export type PublicOrder = {
   createdAt: string
 }
 
-function getApiBaseUrl(): string {
-  const url =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BACKEND_URL ||
-    "http://localhost:4000"
-  return url.replace(/\/$/, "")
-}
-
 export async function createCheckoutSession(
   payload: CreateCheckoutSessionPayload
 ): Promise<CreateCheckoutSessionResponse> {
-  const response = await fetch(
-    `${getApiBaseUrl()}/api/payment/create-checkout-session`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+  try {
+    const { data } = await api.post<CreateCheckoutSessionResponse>(
+      "/api/payment/create-checkout-session",
+      payload
+    )
+
+    if (!data?.checkoutUrl) {
+      throw new Error("Checkout session did not return a redirect URL.")
     }
-  )
 
-  const data = (await response.json().catch(() => null)) as
-    | (CreateCheckoutSessionResponse & { message?: string })
-    | null
-
-  if (!response.ok) {
-    throw new Error(data?.message || "Unable to start checkout. Please try again.")
-  }
-
-  if (!data?.checkoutUrl) {
-    throw new Error("Checkout session did not return a redirect URL.")
-  }
-
-  return {
-    checkoutUrl: data.checkoutUrl,
-    sessionId: data.sessionId,
+    return {
+      checkoutUrl: data.checkoutUrl,
+      sessionId: data.sessionId,
+    }
+  } catch (error) {
+    throw new Error(
+      getApiErrorMessage(error, "Unable to start checkout. Please try again.")
+    )
   }
 }
 
 export async function fetchOrderBySessionId(
   sessionId: string
 ): Promise<PublicOrder | null> {
-  const response = await fetch(
-    `${getApiBaseUrl()}/api/payment/order/${encodeURIComponent(sessionId)}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-      cache: "no-store",
+  try {
+    const { data } = await api.get<{
+      success?: boolean
+      order?: PublicOrder
+      message?: string
+    }>(`/api/payment/order/${encodeURIComponent(sessionId)}`)
+
+    return data.order ?? null
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return null
     }
-  )
-
-  if (response.status === 404) {
-    return null
+    throw new Error(getApiErrorMessage(error, "Unable to load order details."))
   }
-
-  const data = (await response.json().catch(() => null)) as
-    | { success?: boolean; order?: PublicOrder; message?: string }
-    | null
-
-  if (!response.ok) {
-    throw new Error(data?.message || "Unable to load order details.")
-  }
-
-  return data?.order ?? null
 }
 
 /** Poll until webhook has saved the order (or timeout). */

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import { fetchProducts } from "@/lib/products"
-import ProductGrid from "@/components/shop/ProductGrid"
+import ShopProductsClient from "@/components/shop/ShopProductsClient"
 
 export const metadata: Metadata = {
   title: "Shop | The House Of Overflow",
@@ -8,19 +7,7 @@ export const metadata: Metadata = {
     "Browse faith-inspired apparel and merchandise from The House Of Overflow. Wear your faith. Live with purpose.",
 }
 
-export const dynamic = "force-dynamic"
-
-export default async function ShopPage() {
-  let products: Awaited<ReturnType<typeof fetchProducts>> = []
-  let loadError: string | null = null
-
-  try {
-    products = await fetchProducts()
-  } catch (error) {
-    loadError =
-      error instanceof Error ? error.message : "Unable to load products right now."
-  }
-
+export default function ShopPage() {
   return (
     <main className="flex min-h-screen flex-col">
       <section className="relative overflow-hidden bg-gradient-to-br from-faith-slate to-faith-black pt-28 pb-16 text-white md:pt-32 md:pb-20">
@@ -42,13 +29,7 @@ export default async function ShopPage() {
         <div className="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-faith-slate/10" />
         <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/3 translate-y-1/3 rounded-full bg-faith-gold/5" />
         <div className="container relative z-10 mx-auto px-4">
-          {loadError ? (
-            <div className="rounded-2xl bg-faith-white py-16 text-center shadow-lg">
-              <p className="text-lg text-faith-slate">{loadError}</p>
-            </div>
-          ) : (
-            <ProductGrid products={products} />
-          )}
+          <ShopProductsClient />
         </div>
       </section>
     </main>

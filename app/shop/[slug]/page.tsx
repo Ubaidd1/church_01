@@ -1,37 +1,25 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
-import { fetchProductBySlug } from "@/lib/products"
-import ProductDetails from "@/components/shop/ProductDetails"
+import ProductDetailsClient from "@/components/shop/ProductDetailsClient"
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>
 }
 
-export const dynamic = "force-dynamic"
-
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params
-  const product = await fetchProductBySlug(slug).catch(() => null)
-
-  if (!product) {
-    return {
-      title: "Product Not Found | The House Of Overflow",
-    }
-  }
+  const title = slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ")
 
   return {
-    title: `${product.title} | Shop | The House Of Overflow`,
-    description: product.shortDescription,
+    title: `${title} | Shop | The House Of Overflow`,
+    description: "Shop faith-inspired merchandise from The House Of Overflow.",
   }
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const product = await fetchProductBySlug(slug).catch(() => null)
-
-  if (!product) {
-    notFound()
-  }
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -48,7 +36,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="relative overflow-hidden bg-faith-gray/50 py-12 md:py-16">
         <div className="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-faith-slate/10" />
         <div className="container relative z-10 mx-auto px-4">
-          <ProductDetails product={product} />
+          <ProductDetailsClient slug={slug} />
         </div>
       </section>
     </main>

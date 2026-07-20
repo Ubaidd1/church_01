@@ -11,6 +11,7 @@ import { useCart } from "@/components/shop/CartProvider"
 import { formatPrice, type Product } from "@/data/products"
 import { createCheckoutSession } from "@/lib/checkout"
 import { fetchProducts } from "@/lib/products"
+import { toast } from "sonner"
 
 function getShippingFee(): number {
   const raw = process.env.NEXT_PUBLIC_SHIPPING_FEE
@@ -42,9 +43,10 @@ export default function CartView() {
         setProductsById(new Map(products.map((product) => [product.id, product])))
       } catch (error) {
         if (cancelled) return
-        setProductsError(
+        const message =
           error instanceof Error ? error.message : "Unable to load product details."
-        )
+        setProductsError(message)
+        toast.error(message)
       } finally {
         if (!cancelled) {
           setProductsLoading(false)
@@ -117,12 +119,16 @@ export default function CartView() {
     const email = customerEmail.trim()
 
     if (name.length < 2) {
-      setCheckoutError("Please enter your full name.")
+      const message = "Please enter your full name."
+      setCheckoutError(message)
+      toast.error(message)
       return
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setCheckoutError("Please enter a valid email address.")
+      const message = "Please enter a valid email address."
+      setCheckoutError(message)
+      toast.error(message)
       return
     }
 
@@ -145,11 +151,13 @@ export default function CartView() {
         // Ignore storage errors before redirect
       }
 
+      toast.success("Redirecting to Stripe Checkout...")
       window.location.href = checkoutUrl
     } catch (error) {
-      setCheckoutError(
+      const message =
         error instanceof Error ? error.message : "Checkout failed. Please try again."
-      )
+      setCheckoutError(message)
+      toast.error(message)
       setIsCheckingOut(false)
     }
   }
@@ -221,7 +229,10 @@ export default function CartView() {
 
                   <button
                     type="button"
-                    onClick={() => removeItem(product.id)}
+                    onClick={() => {
+                      removeItem(product.id)
+                      toast.success("Item removed from cart")
+                    }}
                     className="inline-flex items-center gap-1.5 text-sm text-faith-slate transition-colors hover:text-red-600"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -239,7 +250,10 @@ export default function CartView() {
 
         <button
           type="button"
-          onClick={clearCart}
+          onClick={() => {
+            clearCart()
+            toast.success("Cart cleared")
+          }}
           className="text-sm text-faith-slate transition-colors hover:text-faith-blue"
         >
           Clear cart

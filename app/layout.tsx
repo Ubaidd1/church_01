@@ -4,6 +4,7 @@ import { Inter, Merriweather } from "next/font/google"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 // Load Inter font for body text
 const inter = Inter({
@@ -46,6 +47,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </div>
+          <Toaster position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>

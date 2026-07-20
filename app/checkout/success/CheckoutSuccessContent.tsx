@@ -7,6 +7,7 @@ import { CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { waitForOrderBySessionId, type PublicOrder } from "@/lib/checkout"
 import { formatPrice } from "@/data/products"
+import { toast } from "sonner"
 
 const CART_STORAGE_KEY = "hoo-shop-cart"
 const EMAIL_STORAGE_KEY = "hoo-checkout-email"
@@ -61,7 +62,9 @@ export default function CheckoutSuccessContent() {
   useEffect(() => {
     if (!sessionId) {
       setIsLoading(false)
-      setError("Missing checkout session. Unable to load order details.")
+      const message = "Missing checkout session. Unable to load order details."
+      setError(message)
+      toast.error(message)
       return
     }
 
@@ -76,20 +79,23 @@ export default function CheckoutSuccessContent() {
         if (cancelled) return
 
         if (!result) {
-          setError(
+          const message =
             "Payment succeeded, but order details are still processing. Please refresh in a moment."
-          )
+          setError(message)
           setOrder(null)
+          toast.message(message)
         } else {
           setOrder(result)
+          toast.success("Order loaded successfully")
         }
       } catch (loadError) {
         if (cancelled) return
-        setError(
+        const message =
           loadError instanceof Error
             ? loadError.message
             : "Unable to load order details."
-        )
+        setError(message)
+        toast.error(message)
       } finally {
         if (!cancelled) {
           setIsLoading(false)
