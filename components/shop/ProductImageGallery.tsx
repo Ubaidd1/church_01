@@ -23,6 +23,7 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
           alt={`${title} — image ${activeIndex + 1}`}
           fill
           priority
+          unoptimized
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover object-center"
         />
@@ -47,6 +48,7 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
                 src={image}
                 alt={`${title} thumbnail ${index + 1}`}
                 fill
+                unoptimized
                 sizes="(max-width: 1024px) 45vw, 20vw"
                 className="object-cover object-center"
               />

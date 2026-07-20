@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, type FormEvent } from "react"
+import { useEffect, useMemo, useState, type FormEvent } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useCart } from "@/components/shop/CartProvider"
-import { formatPrice, getProductById } from "@/data/products"
+import { formatPrice, type Product } from "@/data/products"
 import { createCheckoutSession } from "@/lib/checkout"
+import { fetchProducts } from "@/lib/products"
 
 function getShippingFee(): number {
   const raw = process.env.NEXT_PUBLIC_SHIPPING_FEE
@@ -23,10 +24,42 @@ export default function CartView() {
   const [customerEmail, setCustomerEmail] = useState("")
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [productsById, setProductsById] = useState<Map<string, Product>>(new Map())
+  const [productsLoading, setProductsLoading] = useState(true)
+  const [productsError, setProductsError] = useState<string | null>(null)
 
   const shippingFee = useMemo(() => getShippingFee(), [])
 
-  if (!isHydrated) {
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadProducts() {
+      setProductsLoading(true)
+      setProductsError(null)
+      try {
+        const products = await fetchProducts()
+        if (cancelled) return
+        setProductsById(new Map(products.map((product) => [product.id, product])))
+      } catch (error) {
+        if (cancelled) return
+        setProductsError(
+          error instanceof Error ? error.message : "Unable to load product details."
+        )
+      } finally {
+        if (!cancelled) {
+          setProductsLoading(false)
+        }
+      }
+    }
+
+    void loadProducts()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  if (!isHydrated || productsLoading) {
     return (
       <div className="rounded-2xl bg-faith-white p-10 text-center text-faith-slate shadow-lg">
         Loading cart...
@@ -34,9 +67,20 @@ export default function CartView() {
     )
   }
 
+  if (productsError) {
+    return (
+      <div className="rounded-2xl bg-faith-white px-6 py-16 text-center shadow-lg">
+        <p className="mb-6 text-faith-slate">{productsError}</p>
+        <Button className="rounded-xl bg-faith-blue text-white hover:bg-faith-blue/90" asChild>
+          <Link href="/shop">Back to Shop</Link>
+        </Button>
+      </div>
+    )
+  }
+
   const lines = items
     .map((item) => {
-      const product = getProductById(item.productId)
+      const product = productsById.get(item.productId)
       if (!product) return null
       return { item, product }
     })
@@ -48,7 +92,7 @@ export default function CartView() {
   )
   const displayTotal = subtotal + shippingFee
 
-  if (lines.length === 0) {
+  if (items.length === 0 || lines.length === 0) {
     return (
       <div className="rounded-2xl bg-faith-white px-6 py-16 text-center shadow-lg">
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-faith-blue/10">
@@ -133,6 +177,7 @@ export default function CartView() {
                     fill
                     sizes="112px"
                     className="object-cover"
+                    unoptimized
                   />
                 )}
               </Link>
